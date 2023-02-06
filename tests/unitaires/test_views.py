@@ -31,7 +31,7 @@ def test_login_with_incorrect_email(auth):
 
     response = auth.login('test_incorrect@test.com')
     assert response.status_code == 200
-    assert b"The email is incorrect" in response.data
+    assert b"Sorry, the email wasn't found." in response.data
 
 
 def test_event_places_available(auth, client):
