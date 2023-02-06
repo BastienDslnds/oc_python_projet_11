@@ -1,0 +1,19 @@
+{
+    "competitions": [
+        {
+            "name": "first event",
+            "date": "2023-03-27 10:00:00",
+            "numberOfPlaces": "20"
+        },
+        {
+            "name": "second event",
+            "date": "2023-10-22 13:30:00",
+            "numberOfPlaces": "10"
+        },
+        {
+            "name": "third event",
+            "date": "2023-02-05 13:30:00",
+            "numberOfPlaces": "0"
+        }
+    ]
+}
