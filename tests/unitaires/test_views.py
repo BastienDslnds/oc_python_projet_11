@@ -1,6 +1,3 @@
-# import pytest
-
-
 def test_route_index(client):
     """Tester que l'url de la vue index est bien obtenu."""
     response = client.get('/')
@@ -31,7 +28,7 @@ def test_login_with_incorrect_email(auth):
 
     response = auth.login('test_incorrect@test.com')
     assert response.status_code == 200
-    assert b"Sorry, the email wasn't found." in response.data
+    assert b"Sorry, that email was not found." in response.data
 
 
 def test_event_places_available(auth, client):
