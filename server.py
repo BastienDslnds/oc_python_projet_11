@@ -37,10 +37,15 @@ def create_app(test_config=None):
     def showSummary():
         club = [
             club for club in clubs if club['email'] == request.form['email']
-        ][0]
-        return render_template(
-            'welcome.html', club=club, competitions=competitions
-        )
+        ]
+        if club:
+            club = club[0]
+            return render_template(
+                'welcome.html', club=club, competitions=competitions
+            )
+        else:
+            error_message = "Sorry, that email was not found."
+            return render_template('index.html', message=error_message)
 
     @app.route('/book/<competition>/<club>')
     def book(competition, club):
