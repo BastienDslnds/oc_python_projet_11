@@ -84,6 +84,14 @@ def create_app(test_config=None):
                 competition=targeted_competition,
                 message=error_message,
             )
+        elif int(targeted_competition['numberOfPlaces']) == 0:
+            error_message = "The event is already full."
+            return render_template(
+                'booking.html',
+                club=targeted_club,
+                competition=targeted_competition,
+                message=error_message,
+            )
         elif placesRequired > MAX_PLACES_ALLOWED:
             error_message = "You are not able to book more than 12 places."
             return render_template(

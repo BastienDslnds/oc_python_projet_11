@@ -135,12 +135,11 @@ def test_should_not_be_able_to_use_more_than_available_places(auth, client):
     )
 
 
-def test_should_not_be_able_to_book_full_event(auth, client):
+def test_should_not_be_able_to_book_full_event(client):
     """Si le concours est complet:
     - la vue de booking est ré-affichée
     - un message d'erreur spécifique est affiché"""
 
-    # auth.login('club_two@test.com')
     competition = 'third event'
     club = 'club two'
     response = client.post(
