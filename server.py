@@ -2,6 +2,8 @@ import json
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, flash, url_for
 
+MAX_PLACES_ALLOWED = 12
+
 
 def loadClubs(file):
     with open(file) as c:
@@ -70,7 +72,15 @@ def create_app(test_config=None):
         ][0]
         club = [c for c in clubs if c['name'] == request.form['club']][0]
         placesRequired = int(request.form['places'])
-        if int(club['points']) < placesRequired:
+        if placesRequired > MAX_PLACES_ALLOWED:
+            error_message = "You are not able to book more than 12 places."
+            return render_template(
+                'booking.html',
+                club=club,
+                competition=competition,
+                message=error_message,
+            )
+        elif int(club['points']) < placesRequired:
             error_message = (
                 "You are not able to use more than your available points."
             )
@@ -84,6 +94,7 @@ def create_app(test_config=None):
             competition['numberOfPlaces'] = (
                 int(competition['numberOfPlaces']) - placesRequired
             )
+            club['points'] = int(club['points']) - placesRequired
             flash('Great-booking complete!')
             return render_template(
                 'welcome.html', club=club, competitions=competitions

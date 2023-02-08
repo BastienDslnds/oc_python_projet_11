@@ -50,7 +50,7 @@ def test_message_booking_confirmation(auth, client):
     club = 'club one'
     response = client.post(
         'purchasePlaces',
-        data={'places': 5, 'competition': competition, 'club': club},
+        data={'places': 2, 'competition': competition, 'club': club},
     )
     assert b'Great-booking complete!' in response.data
 
@@ -68,6 +68,20 @@ def test_available_points_are_updated(auth, client):
     )
     print(response.data)
     assert b'Points available: 5' in response.data
+
+
+def test_available_places_are_updated(auth, client):
+    """Tester que les places disponibles sont mis à jour
+    après une réservation."""
+    auth.login('club_two@test.com')
+    competition = 'first event'
+    club = 'club two'
+    response = client.post(
+        '/purchasePlaces',
+        data={'places': 1, 'club': club, 'competition': competition},
+    )
+    print(response.data)
+    assert b'Number of Places: 19' in response.data
 
 
 def test_should_not_be_able_to_use_more_than_available_points(auth, client):
