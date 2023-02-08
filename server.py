@@ -100,6 +100,16 @@ def create_app(test_config=None):
                 competition=targeted_competition,
                 message=error_message,
             )
+        elif placesRequired > int(targeted_competition['numberOfPlaces']):
+            error_message = (
+                "You are not able to book more than available places."
+            )
+            return render_template(
+                'booking.html',
+                club=targeted_club,
+                competition=targeted_competition,
+                message=error_message,
+            )
         elif int(targeted_club['points']) < placesRequired:
             error_message = (
                 "You are not able to use more than your available points."

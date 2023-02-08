@@ -1,7 +1,6 @@
 def test_route_index(client):
     """Tester que l'url de la vue index est bien obtenu."""
     response = client.get('/')
-    assert response.headers["Location"] == "/"
     assert client.get('/').status_code == 200
     assert b'Welcome to the GUDLFT Registration Portal!' in response.data
 
@@ -33,8 +32,10 @@ def test_login_with_incorrect_email(auth):
     assert b"Sorry, that email was not found." in response.data
 
 
-def test_event_places_available(auth, client):
-    """Le nombre d'inscriptions disponibles pour l'évènement doit être visible."""
+def test_event_places_available(client):
+    """Le nombre d'inscriptions disponibles pour l'évènement
+    doit être visible."""
+
     competition = 'first event'
     club = 'club one'
     response = client.get(f'/book/{competition}/{club}')
@@ -42,11 +43,11 @@ def test_event_places_available(auth, client):
     assert b'Places available: 20' in response.data
 
 
-def test_message_booking_confirmation(auth, client):
+def test_message_booking_confirmation(client):
     """Si la réservation est confirmée alors:
     - la welcome page est affichée
     - un message de confirmation est obtenu"""
-    response = auth.login()
+
     competition = 'first event'
     club = 'club one'
     response = client.post(
@@ -56,36 +57,33 @@ def test_message_booking_confirmation(auth, client):
     assert b'Great-booking complete!' in response.data
 
 
-def test_available_points_are_updated(auth, client):
+def test_available_points_are_updated(client):
     """Tester que les points disponibles sont mis à jour
     après une réservation."""
 
-    auth.login('club_two@test.com')
     competition = 'first event'
     club = 'club two'
     response = client.post(
         '/purchasePlaces',
         data={'places': 10, 'club': club, 'competition': competition},
     )
-    print(response.data)
     assert b'Points available: 5' in response.data
 
 
-def test_available_places_are_updated(auth, client):
+def test_available_places_are_updated(client):
     """Tester que les places disponibles sont mis à jour
     après une réservation."""
-    auth.login('club_two@test.com')
+
     competition = 'first event'
     club = 'club two'
     response = client.post(
         '/purchasePlaces',
         data={'places': 1, 'club': club, 'competition': competition},
     )
-    print(response.data)
     assert b'Number of Places: 19' in response.data
 
 
-def test_should_not_be_able_to_use_more_than_available_points(auth, client):
+def test_should_not_be_able_to_use_more_than_available_points(client):
     """Si le nombre de places demandées est supérieur aux points disponibles:
     - la vue de booking est ré-affichée
     - un message d'erreur spécifique est affiché"""
@@ -102,12 +100,11 @@ def test_should_not_be_able_to_use_more_than_available_points(auth, client):
     )
 
 
-def test_should_not_be_able_to_use_more_than_max_allowed_places(auth, client):
+def test_should_not_be_able_to_use_more_than_max_allowed_places(client):
     """Si le nombre de places demandées est supérieur à 12 alors:
     - la vue de booking est ré-affichée
     - un message d'erreur spécifique est affiché"""
 
-    auth.login('club_two@test.com')
     competition = 'second event'
     club = 'club two'
     response = client.post(
@@ -117,12 +114,11 @@ def test_should_not_be_able_to_use_more_than_max_allowed_places(auth, client):
     assert b"You are not able to book more than 12 places." in response.data
 
 
-def test_should_not_be_able_to_use_more_than_available_places(auth, client):
+def test_should_not_be_able_to_use_more_than_available_places(client):
     """Si le nombre de places demandées est supérieur aux places disponibles alors:
     - la vue de booking est ré-affichée
     - un message d'erreur spécifique est affiché"""
 
-    auth.login('club_two@test.com')
     competition = 'second event'
     club = 'club two'
     response = client.post(
@@ -149,7 +145,7 @@ def test_should_not_be_able_to_book_full_event(client):
     assert b"The event is already full." in response.data
 
 
-def test_should_not_book_past_competition(auth, client):
+def test_should_not_book_past_competition(client):
     """Créer une compétition avec une date inférieure à la date d'aujourd'hui."""
 
     competition = 'fourth event'
