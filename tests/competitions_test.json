@@ -14,6 +14,11 @@
             "name": "third event",
             "date": "2023-02-05 13:30:00",
             "numberOfPlaces": "0"
+        },
+        {
+            "name": "fourth event",
+            "date": "2023-02-07 13:30:00",
+            "numberOfPlaces": "14"
         }
     ]
 }

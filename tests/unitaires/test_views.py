@@ -152,8 +152,7 @@ def test_should_not_be_able_to_book_full_event(auth, client):
 def test_should_not_book_past_competition(auth, client):
     """Créer une compétition avec une date inférieure à la date d'aujourd'hui."""
 
-    # auth.login('club_two@test.com')
-    competition = 'third event'
+    competition = 'fourth event'
     club = 'club two'
     response = client.post(
         'purchasePlaces',
