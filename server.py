@@ -70,13 +70,24 @@ def create_app(test_config=None):
         ][0]
         club = [c for c in clubs if c['name'] == request.form['club']][0]
         placesRequired = int(request.form['places'])
-        competition['numberOfPlaces'] = (
-            int(competition['numberOfPlaces']) - placesRequired
-        )
-        flash('Great-booking complete!')
-        return render_template(
-            'welcome.html', club=club, competitions=competitions
-        )
+        if int(club['points']) < placesRequired:
+            error_message = (
+                "You are not able to use more than your available points."
+            )
+            return render_template(
+                'booking.html',
+                club=club,
+                competition=competition,
+                message=error_message,
+            )
+        else:
+            competition['numberOfPlaces'] = (
+                int(competition['numberOfPlaces']) - placesRequired
+            )
+            flash('Great-booking complete!')
+            return render_template(
+                'welcome.html', club=club, competitions=competitions
+            )
 
     # TODO: Add route for points display
 
