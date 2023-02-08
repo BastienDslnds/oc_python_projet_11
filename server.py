@@ -72,7 +72,17 @@ def create_app(test_config=None):
         ][0]
         club = [c for c in clubs if c['name'] == request.form['club']][0]
         placesRequired = int(request.form['places'])
-        if placesRequired > MAX_PLACES_ALLOWED:
+        if competition['date'] < date_now:
+            error_message = (
+                "You are not able to book places in past competition."
+            )
+            return render_template(
+                'booking.html',
+                club=club,
+                competition=competition,
+                message=error_message,
+            )
+        elif placesRequired > MAX_PLACES_ALLOWED:
             error_message = "You are not able to book more than 12 places."
             return render_template(
                 'booking.html',
