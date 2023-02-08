@@ -127,7 +127,9 @@ def create_app(test_config=None):
             targeted_club['points'] = (
                 int(targeted_club['points']) - placesRequired
             )
-            flash('Great-booking complete!')
+            flash(
+                f"Great-booking complete! You booked {placesRequired} places"
+            )
             return render_template(
                 'welcome.html', club=targeted_club, competitions=competitions
             )

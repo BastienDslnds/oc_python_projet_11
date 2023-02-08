@@ -54,7 +54,7 @@ def test_message_booking_confirmation(client):
         'purchasePlaces',
         data={'places': 2, 'competition': competition, 'club': club},
     )
-    assert b'Great-booking complete!' in response.data
+    assert b'Great-booking complete! You booked 2 places' in response.data
 
 
 def test_available_points_are_updated(client):
