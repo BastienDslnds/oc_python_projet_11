@@ -1,0 +1,26 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board || GUDLFT</title>
+</head>
+
+<body>
+    <table>
+        <caption>Available points by club</caption>
+        <tr>
+            <th align='center'>Club</th>
+            <th align='center'>Available points</th>
+        </tr>
+        {% for club in clubs %}
+            <tr>
+                <td align='center'>{{club['name']}}</td>
+                <td align='center'>{{club['points']}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <a href='/' class="button"><button>Back to login</button></a>
+</body>
+
+</html>

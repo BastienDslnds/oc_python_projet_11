@@ -9,7 +9,9 @@ def test_route_index(client):
 def test_clubs_remaining_points_displayed(client):
     """Un tableau des points disponibles pour chaque club
     doit être accessible sans se connecter au site."""
-    pass
+    response = client.get('/board')
+    assert b"<td align=\'center\'>club one</td>" in response.data
+    assert b"<td align=\'center\'>4</td>" in response.data
 
 
 def test_login_with_correct_email(auth):
@@ -33,7 +35,6 @@ def test_login_with_incorrect_email(auth):
 
 def test_event_places_available(auth, client):
     """Le nombre d'inscriptions disponibles pour l'évènement doit être visible."""
-    # response = auth.login()
     competition = 'first event'
     club = 'club one'
     response = client.get(f'/book/{competition}/{club}')
