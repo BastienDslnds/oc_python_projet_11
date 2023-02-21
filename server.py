@@ -51,11 +51,13 @@ def create_app(test_config=None):
 
     @app.route('/book/<competition>/<club>')
     def book(competition, club):
-        foundClub = [c for c in clubs if c['name'] == club][0]
+        foundClub = [c for c in clubs if c['name'] == club]
         foundCompetition = [
             c for c in competitions if c['name'] == competition
-        ][0]
+        ]
         if foundClub and foundCompetition:
+            foundClub = foundClub[0]
+            foundCompetition = foundCompetition[0]
             return render_template(
                 'booking.html', club=foundClub, competition=foundCompetition
             )
@@ -70,6 +72,7 @@ def create_app(test_config=None):
         targeted_competition = [
             c for c in competitions if c['name'] == request.form['competition']
         ][0]
+        print(targeted_competition)
         targeted_club = [
             c for c in clubs if c['name'] == request.form['club']
         ][0]

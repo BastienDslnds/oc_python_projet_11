@@ -1,13 +1,15 @@
 def test_route_index(client):
-    """Tester que l'url de la vue index est bien obtenu."""
+    """Tester que l'url '/' est résolu vers la vue index."""
+
     response = client.get('/')
+    print(response.__dict__)
     assert client.get('/').status_code == 200
     assert b'Welcome to the GUDLFT Registration Portal!' in response.data
 
 
 def test_clubs_remaining_points_displayed(client):
-    """Un tableau des points disponibles pour chaque club
-    doit être accessible sans se connecter au site."""
+    """Tester que l'url '/board' est résolu vers la vue board."""
+
     response = client.get('/board')
     assert b"<td align=\'center\'>club one</td>" in response.data
     assert b"<td align=\'center\'>4</td>" in response.data
@@ -158,3 +160,15 @@ def test_should_not_book_past_competition(client):
         b"You are not able to book places in past competition."
         in response.data
     )
+
+
+def test_book_unknown_club(client):
+    competition = 'first event'
+    club = 'club three'
+    response = client.get(f'/book/{competition}/{club}')
+    assert b'Something went wrong-please try again' in response.data
+
+
+def test_logout(client):
+    response = client.get('/logout', follow_redirects=True)
+    assert b"Welcome to the GUDLFT Registration Portal!" in response.data
