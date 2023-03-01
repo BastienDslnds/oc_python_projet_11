@@ -72,7 +72,6 @@ def create_app(test_config=None):
         targeted_competition = [
             c for c in competitions if c['name'] == request.form['competition']
         ][0]
-        print(targeted_competition)
         targeted_club = [
             c for c in clubs if c['name'] == request.form['club']
         ][0]

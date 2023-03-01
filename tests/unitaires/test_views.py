@@ -93,7 +93,7 @@ def test_should_not_be_able_to_use_more_than_available_points(client):
     competition = 'first event'
     club = 'club one'
     response = client.post(
-        'purchasePlaces',
+        '/purchasePlaces',
         data={'places': 5, 'competition': competition, 'club': club},
     )
     assert (
@@ -110,7 +110,7 @@ def test_should_not_be_able_to_use_more_than_max_allowed_places(client):
     competition = 'second event'
     club = 'club two'
     response = client.post(
-        'purchasePlaces',
+        '/purchasePlaces',
         data={'places': 13, 'club': club, 'competition': competition},
     )
     assert b"You are not able to book more than 12 places." in response.data
@@ -124,7 +124,7 @@ def test_should_not_be_able_to_use_more_than_available_places(client):
     competition = 'second event'
     club = 'club two'
     response = client.post(
-        'purchasePlaces',
+        '/purchasePlaces',
         data={'places': 11, 'club': club, 'competition': competition},
     )
     assert (
@@ -141,7 +141,7 @@ def test_should_not_be_able_to_book_full_event(client):
     competition = 'third event'
     club = 'club two'
     response = client.post(
-        'purchasePlaces',
+        '/purchasePlaces',
         data={'places': 11, 'club': club, 'competition': competition},
     )
     assert b"The event is already full." in response.data
@@ -153,7 +153,7 @@ def test_should_not_book_past_competition(client):
     competition = 'fourth event'
     club = 'club two'
     response = client.post(
-        'purchasePlaces',
+        '/purchasePlaces',
         data={'places': 11, 'club': club, 'competition': competition},
     )
     assert (
