@@ -2,6 +2,8 @@ from flask import Flask
 from flask_testing import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class TestAuthentification(LiveServerTestCase):
@@ -12,20 +14,15 @@ class TestAuthentification(LiveServerTestCase):
         app.config['TESTING'] = True
         return app
 
-    def setUp(self):
-        """Etapes communes à chaque test:
-        - Lancement de l'application
-        - Création d'un client HTTP à l'aide d'un webdriver
-        - Ouvrir une page chrome sur le localhost."""
+    def test_login(self):
+        """Tester la connexion."""
 
         self.browser = webdriver.Chrome("tests/fonctionnels/chromedriver")
         self.browser.get(self.get_server_url())
 
-    def tearDown(self):
-        self.browser.quit()
-
-    def test_login(self):
-        """Tester la connexion."""
+        WebDriverWait(self.browser, 10).until(
+            EC.presence_of_element_located((By.NAME, "email"))
+        )
 
         email = self.browser.find_element(By.NAME, "email")
         email.send_keys('club_one@test.com')
@@ -36,21 +33,27 @@ class TestAuthentification(LiveServerTestCase):
             self.browser.current_url, self.live_server_url + '/showSummary'
         )
 
+    # def test_login_with_incorrect_email(self):
+    #     """Tester la connexion avec un email incorrect."""
 
-# def test_login_with_incorrect_email(self):
-#     """Tester la connexion avec un email incorrect."""
+    #     self.browser = webdriver.Chrome("tests/fonctionnels/chromedriver")
+    #     self.browser.get(self.get_server_url())
 
-#     email = self.browser.find_element(By.NAME, "email")
-#     email.send_keys('incorrect@test.com')
+    #     WebDriverWait(self.browser, 10).until(
+    #         EC.presence_of_element_located((By.NAME, "email"))
+    #     )
 
-#     enter = self.browser.find_element(By.TAG_NAME, 'button')
-#     enter.click()
+    #     email = self.browser.find_element(By.NAME, "email")
+    #     email.send_keys('incorrect@test.com')
 
-#     self.assertEqual(
-#         self.browser.page_source.find('Sorry, that email was not found.'),
-#         -1,
-#     )
-#     self.assertEqual(self.browser.current_url, self.live_server_url + '/')
+    #     enter = self.browser.find_element(By.TAG_NAME, 'button')
+    #     enter.click()
+
+    #     self.assertEqual(
+    #         self.browser.page_source.find('Sorry, that email was not found.'),
+    #         -1,
+    #     )
+    #     self.assertEqual(self.browser.current_url, self.live_server_url + '/')
 
 
 # class TestBooking(LiveServerTestCase):
